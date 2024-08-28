@@ -14,17 +14,17 @@ public abstract class Piece {
         return symbol;
     }
 
-    public void setSymbol(String getsymbol) {
-        symbol = getsymbol;
+    public void setSymbol(String getSymbol) {
+        symbol = getSymbol;
     }
 
     public PieceColour getColour() {
         return colour;
     }
 
-    public void updateCoordinates(int newrow, int newcol) {
-        row=newrow;
-        col=newcol;
+    public void updateCoordinates(int newRow, int newCol) {
+        row = newRow;
+        col = newCol;
     }
 
     public abstract boolean isLegitMove(int x1, int y1, int x2, int y2);

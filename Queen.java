@@ -3,7 +3,7 @@ package chess;
 public class Queen extends Piece{
     public Queen(PieceColour col) {
         colour=col;
-        if (colour==PieceColour.WHITE) {
+        if (colour==PieceColour.BLACK) {
             setSymbol("\u2655");
         } else {
             setSymbol("\u265B");

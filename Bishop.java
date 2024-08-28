@@ -3,7 +3,7 @@ package chess;
 public class Bishop extends Piece {
     public Bishop(PieceColour col) {
         colour=col;
-        if (colour==PieceColour.WHITE) {
+        if (colour==PieceColour.BLACK) {
             setSymbol("\u2657");
         } else {
             setSymbol("\u265D");

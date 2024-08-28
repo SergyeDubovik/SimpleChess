@@ -2,41 +2,39 @@ package chess;
 
 //This class is partially implemented 
 public class Square {
-	private int i;
-	private int j;
-	private boolean hasPiece;
-	private Piece p;
-	
-	public Square(int iIn, int jIn){
-		i=iIn;
-		j=jIn;
-	}
+    private int i;
+    private int j;
+    private boolean hasPiece;
+    private Piece p;
 
-	public void setPiece(Piece piece) {
-		hasPiece=true;
-		p=piece;
-	}
+    public Square(int iIn, int jIn) {
+        i = iIn;
+        j = jIn;
+    }
 
-	public void removePiece() {
-		hasPiece=false;
-		p=null;
-	}
+    public void setPiece(Piece piece) {
+        hasPiece = true;
+        p = piece;
+    }
 
-	public boolean hasPiece(){
+    public void removePiece() {
+        hasPiece = false;
+        p = null;
+    }
 
-		return hasPiece;
-	}
+    public boolean hasPiece() {
+        return hasPiece;
+    }
 
-	public Piece getPiece() {
+    public Piece getPiece() {
+        return p;
+    }
 
-		return p;
-	}
+    public int getI() {
+        return i;
+    }
 
-	public int getI() {
-		return i;
-	}
-
-	public int getJ() {
-		return this.j;
-	}
+    public int getJ() {
+        return j;
+    }
 }

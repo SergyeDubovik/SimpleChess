@@ -3,7 +3,7 @@ package chess;
 public class Rook extends Piece{
     public Rook(PieceColour col){
         colour=col;
-        if (colour==PieceColour.WHITE) {
+        if (colour==PieceColour.BLACK) {
             setSymbol("\u2656");
         } else {
             setSymbol("\u265C");

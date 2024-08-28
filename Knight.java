@@ -4,7 +4,7 @@ public class Knight extends Piece {
     public Knight(PieceColour col) {
         colour = col;
 
-        if (colour==PieceColour.WHITE) {
+        if (colour==PieceColour.BLACK) {
             setSymbol("\u2658");
         } else {
             setSymbol("\u265E");
