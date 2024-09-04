@@ -91,10 +91,12 @@ public class Game {
                 System.out.println("------ Black's move -------");
                 System.out.println("> Enter Origin: ");
                 String origin = scan.nextLine();
-                int orrow = (int) (origin.charAt(0) - 49);
+                int orrow = origin.charAt(0) - 49;
+                orrow = 7 - orrow;
                 System.out.println("> Enter Destination: ");
                 String destination = scan.nextLine();
-                int drow = (int) (destination.charAt(0) - 49);
+                int drow = destination.charAt(0) - 49;
+                drow = 7 - drow;
 
                 if ((origin.equals("END")) || (destination.equals("END"))) {
                     end = true;

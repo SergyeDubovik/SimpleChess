@@ -57,7 +57,7 @@ public class Board {
                 if ((j == 0) && board[i][j].hasPiece()) {
                     System.out.print(row + " " + board[i][j].getPiece().getSymbol());
                 } else if ((j == 0) && !board[i][j].hasPiece()) {
-                    System.out.print(row + " ");
+                    System.out.print(row + "  ");
                 } else if (board[i][j].hasPiece()) {
                     System.out.print("|" + board[i][j].getPiece().getSymbol());
                 } else {
