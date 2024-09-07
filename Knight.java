@@ -24,7 +24,7 @@ public class Knight extends Piece {
             return false;
         }
 
-        if(tb[x2][y2].hasPiece() == true) {
+        if(tb[x2][y2].hasPiece()) {
             if (colour == PieceColour.WHITE) {
                 if (tb[x2][y2].getPiece().getColour() == PieceColour.WHITE) {
                     return false;
@@ -32,9 +32,7 @@ public class Knight extends Piece {
             }
 
             if (colour == PieceColour.BLACK) {
-                if (tb[x2][y2].getPiece().getColour() == PieceColour.BLACK) {
-                    return false;
-                }
+                return tb[x2][y2].getPiece().getColour() != PieceColour.BLACK;
 
             }
 

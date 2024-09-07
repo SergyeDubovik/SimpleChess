@@ -48,7 +48,7 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.print("\n 'a'b'c'd'e'f'g'h");
+        System.out.print("\n  a b c d e f g h");
         System.out.println(" \n -----------------");
 
         for (int i = 0; i < board.length; i++) {

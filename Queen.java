@@ -15,8 +15,8 @@ public class Queen extends Piece{
         //Queen combines the rook and bishop, so we see if it is legit for any of those, and if it is then it must also be legit for the queen
         Piece r = new Rook(colour);
         Piece b = new Bishop(colour);
-        boolean rtest = false;
-        boolean btest = false;
+        boolean rTest = false;
+        boolean bTest = false;
         if (r.isLegitMove(x1,y1,x2,y2) || b.isLegitMove(x1,y1,x2,y2)) {
             if(tb[x2][y2].hasPiece() == true) {
                 if (colour == PieceColour.WHITE) {
