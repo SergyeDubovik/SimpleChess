@@ -15,152 +15,7 @@ public class Game {
         int i = 0;
         //Turns are based on a counter, if it is even, its white turns and if its odd then its blacks
         while (!gameEnd) {
-            if (i % 2 == 0) {
-                System.out.println("------ Whites move -------");
-                System.out.println("> Enter Origin: ");
-                String origin = scan.nextLine();
-                char firstSymbol = origin.charAt(0);
-                int orrow = firstSymbol - 49;
-                orrow = 7 - orrow;
-                System.out.println("> Enter Destination: ");
-                String destination = scan.nextLine();
-                int drow = destination.charAt(0) - 49;
-                drow = 7 - drow;
-                // ^^ converts stuff to a usable format.
-
-                if ((origin.equals("END")) || (destination.equals("END"))) {
-                    end = true;
-                    gameEnd = true;
-                    break;
-                }
-                if ((origin.equals("RESIGN")) || (destination.equals("RESIGN"))) {
-                    i = 1;
-                    gameEnd = true;
-                    break;
-                }
-
-
-                //Validates the square the user picked before moving
-                if (c.checkCoordinateValidity(origin) && c.checkCoordinateValidity(destination)) {
-                    if (board.hasPiece(orrow, getCol(origin))) {
-
-                        //checks the legitimacy of the move and the destination piece
-                        // and then moves it and then increments the counter
-                        //and stuff like if you are moving your own piece
-                        if (board.getPiece(orrow, getCol(origin)).getColour() == PieceColour.WHITE &&
-                                board.getPiece(orrow, getCol(origin)).isLegitMove(orrow, getCol(origin),
-                                        drow, getCol(destination))) {
-
-                            if (!(board.hasPiece(drow, getCol(destination))) ||
-                                    ((board.hasPiece(drow, getCol(destination))) &&
-                                    board.getPiece(drow, getCol(destination)).getColour() == PieceColour.BLACK)) {
-
-                                if (board.movePiece(orrow, getCol(origin), drow, getCol(destination),
-                                        board.getPiece(orrow, getCol(origin)))) {
-
-                                    //winnerReset.printBoard();
-                                    gameEnd = true;
-                                    break;
-
-                                }
-                                board.printBoard();
-                                i = i + 1;
-                                //Errors depending on what failed (useful for debugging) and it sets counter back to 2,
-                                // so you have to retake the move until you make a legitimate one
-                            } else {
-                                System.out.println("Illegal Move");
-                                i = 2;
-                            }
-
-                        } else {
-                            System.out.println("Illegal Move");
-                            i = 2;
-                        }
-                    } else {
-                        System.out.println("Illegal Move");
-                        i = 2;
-                    }
-                } else {
-                    System.out.println("Illegal Move");
-                    i = 2;
-                }
-            }
-
-            //mostly the same as above but adapted to black pieces
-            if (i % 2 == 1) {
-                System.out.println("------ Black's move -------");
-                System.out.println("> Enter Origin: ");
-                String origin = scan.nextLine();
-                int orrow = origin.charAt(0) - 49;
-                orrow = 7 - orrow;
-                System.out.println("> Enter Destination: ");
-                String destination = scan.nextLine();
-                int drow = destination.charAt(0) - 49;
-                drow = 7 - drow;
-
-                if ((origin.equals("END")) || (destination.equals("END"))) {
-                    end = true;
-                    gameEnd = true;
-                    break;
-                }
-                if ((origin.equals("RESIGN")) || (destination.equals("RESIGN"))) {
-                    i = 2;
-                    gameEnd = true;
-                    break;
-                }
-
-                //checks validity of chosen square
-                if (c.checkCoordinateValidity(origin) && c.checkCoordinateValidity(destination)) {
-                    if (board.hasPiece(orrow, getCol(origin))) {
-
-                        //checks the legitimacy of the move and the destination piece
-                        // and then moves it and then increments the counter
-                        //and stuff like if you are moving your own piece
-                        if (board.getPiece(orrow, getCol(origin)).getColour() == PieceColour.BLACK &&
-                                board.getPiece(orrow, getCol(origin)).isLegitMove(orrow, getCol(origin),
-                                        drow, getCol(destination))) {
-
-                            if (!(board.hasPiece(drow, getCol(destination))) ||
-                                    ((board.hasPiece(drow, getCol(destination))) &&
-                                    board.getPiece(drow, getCol(destination)).getColour() == PieceColour.WHITE)) {
-
-                                //b.movePiece(orrow, getCol(origin), drow, getCol(destination),
-                                // b.getPiece(orrow, getCol(origin)));
-                                if (board.movePiece(orrow, getCol(origin), drow, getCol(destination),
-                                        board.getPiece(orrow, getCol(origin)))) {
-
-                                    //winnerReset.printBoard();
-                                    gameEnd = true;
-                                    break;
-
-                                }
-                                board.printBoard();
-                                i = i + 1;
-                                //Errors depending on what failed (useful for debugging) and it sets counter back to 2,
-                                // so you have to retake the move until you make a legitimate one
-                            } else {
-                                System.out.println("Illegal Move");
-                                i = 1;
-                            }
-
-                        } else {
-                            System.out.println("Illegal Move");
-                            i = 1;
-                        }
-                    } else {
-                        System.out.println("Illegal Move");
-                        i = 1;
-                    }
-                } else {
-                    System.out.println("Illegal Move");
-                    i = 1;
-
-                }
-
-
-            }
-
-
+            i = makeMove(i, end, scan, c, board);
         }
 
         if (gameEnd && i % 2 == 0 && !end) {
@@ -198,8 +53,96 @@ public class Game {
         return 10;
     }
 
+    private static String reverseString(String input) {
+        char[] chars = input.toCharArray();
+        for (int i = 0; i < chars.length / 2; i++) {
+            char temp = chars[i];
+            chars[i] = chars[chars.length - 1 - i];
+            chars[chars.length - 1 - i] = temp;
+        }
+        return new String(chars);
+    }
 
-    public static void main(String args[]) {
+    private static int makeMove(int i, boolean end, Scanner scan, CheckInput c, Board board) {
+        String color;
+        PieceColour pieceColour;
+        if (i % 2 == 0) {
+            pieceColour = PieceColour.WHITE;
+            color = "Whites";
+        } else {
+            pieceColour = PieceColour.BLACK;
+            color = "Black's";
+        }
+        System.out.println("------ " + color + " move -------");
+        System.out.println("> Enter Origin: ");
+        String origin = scan.nextLine();
+        origin = reverseString(origin);
+        char firstSymbol = origin.charAt(0);
+        int orrow = firstSymbol - 49;
+        orrow = 7 - orrow;
+        System.out.println("> Enter Destination: ");
+        String destination = scan.nextLine();
+        destination = reverseString(destination);
+        int drow = destination.charAt(0) - 49;
+        drow = 7 - drow;
+        // ^^ converts stuff to a usable format.
+
+        if ((origin.equals("END")) || (destination.equals("END"))) {
+            end = true;
+            gameEnd = true;
+            return i;
+        }
+        if ((origin.equals("RESIGN")) || (destination.equals("RESIGN"))) {
+            i = 1;
+            gameEnd = true;
+            return i;
+        }
+
+
+        //Validates the square the user picked before moving
+        if (c.checkCoordinateValidity(origin) && c.checkCoordinateValidity(destination)) {
+            if (board.hasPiece(orrow, getCol(origin))) {
+
+                //checks the legitimacy of the move and the destination piece
+                // and then moves it and then increments the counter
+                //and stuff like if you are moving your own piece
+                if (board.getPiece(orrow, getCol(origin)).getColour() == pieceColour &&
+                        board.getPiece(orrow, getCol(origin)).isLegitMove(orrow, getCol(origin),
+                                drow, getCol(destination))) {
+
+                    if (!(board.hasPiece(drow, getCol(destination))) ||
+                            ((board.hasPiece(drow, getCol(destination))) &&
+                                    board.getPiece(drow, getCol(destination)).getColour() == pieceColour.opposite())) {
+
+                        if (board.movePiece(orrow, getCol(origin), drow, getCol(destination),
+                                board.getPiece(orrow, getCol(origin)))) {
+
+                            //winnerReset.printBoard();
+                            gameEnd = true;
+                            return i;
+
+                        }
+                        board.printBoard();
+                        i = i + 1;
+                        //Errors depending on what failed (useful for debugging) and it sets counter back to 2,
+                        // so you have to retake the move until you make a legitimate one
+                    } else {
+                        System.out.println("Illegal Move");
+                    }
+                } else {
+                    System.out.println("Illegal Move");
+                }
+            } else {
+                System.out.println("Illegal Move");
+            }
+        } else {
+            System.out.println("Illegal Move");
+        }
+        return i;
+    }
+
+
+    public static void main(String[] args) {
         Game g = new Game();
     }
 }
