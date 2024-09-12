@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class Game {
     private static boolean gameEnd = false;
+    private static boolean resign = false;
+
 
     public Game() {
         Scanner scan = new Scanner(System.in);
@@ -18,13 +20,13 @@ public class Game {
             i = makeMove(i, end, scan, c, board);
         }
 
-        if (gameEnd && i % 2 == 0 && !end) {
+        if ((i % 2 == 0 && !end && !resign) || (i % 2 == 1 && resign)) {
             board.printBoard();
             System.out.println("WHITE WINS.");
             System.out.println("BLACK'S KING WAS CAPTURED OR HE/SHE RESIGNED!");
         }
 
-        if (gameEnd && i % 2 == 1 && !end) {
+        if ((i % 2 == 1 && !end && !resign) || (i % 2 == 0 && resign)) {
             board.printBoard();
             System.out.println("BLACK WINS.");
             System.out.println("WHITE'S KING WAS CAPTURED OR HE/SHE RESIGNED!");
@@ -33,21 +35,21 @@ public class Game {
 
     //gets the column as a number you can plug in directly
     public static int getCol(String x) {
-        if (x.charAt(x.length() - 1) == (char) 'a') {
+        if (x.charAt(x.length() - 1) == 'a') {
             return 0;
-        } else if (x.charAt(x.length() - 1) == (char) 'b') {
+        } else if (x.charAt(x.length() - 1) == 'b') {
             return 1;
-        } else if (x.charAt(x.length() - 1) == (char) 'c') {
+        } else if (x.charAt(x.length() - 1) == 'c') {
             return 2;
-        } else if (x.charAt(x.length() - 1) == (char) 'd') {
+        } else if (x.charAt(x.length() - 1) == 'd') {
             return 3;
-        } else if (x.charAt(x.length() - 1) == (char) 'e') {
+        } else if (x.charAt(x.length() - 1) == 'e') {
             return 4;
-        } else if (x.charAt(x.length() - 1) == (char) 'f') {
+        } else if (x.charAt(x.length() - 1) == 'f') {
             return 5;
-        } else if (x.charAt(x.length() - 1) == (char) 'g') {
+        } else if (x.charAt(x.length() - 1) == 'g') {
             return 6;
-        } else if (x.charAt(x.length() - 1) == (char) 'h') {
+        } else if (x.charAt(x.length() - 1) == 'h') {
             return 7;
         }
         return 10;
@@ -87,13 +89,13 @@ public class Game {
         drow = 7 - drow;
         // ^^ converts stuff to a usable format.
 
-        if ((origin.equals("END")) || (destination.equals("END"))) {
+        if ((reverseString(origin).equals("END")) || (reverseString(destination).equals("END"))) {
             end = true;
             gameEnd = true;
             return i;
         }
-        if ((origin.equals("RESIGN")) || (destination.equals("RESIGN"))) {
-            i = 1;
+        if ((reverseString(origin).equals("RESIGN")) || (reverseString(destination).equals("RESIGN"))) {
+            resign = true;
             gameEnd = true;
             return i;
         }
